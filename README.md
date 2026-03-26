@@ -1,61 +1,121 @@
 # Drupal Article Export to JSON
 
-A standalone PHP script for exporting **Drupal 8 / 9 Article nodes** into a rich, structured JSON file.  
-Designed for developers who need a deep, entity-aware export without installing a Drupal module.
+Drupal Article Export to JSON is a standalone PHP script that exports published Article nodes from Drupal 8 and 9 into a structured JSON file.
 
-This exporter connects directly to a Drupal database and resolves Articles along with their related taxonomy, media, files, paragraphs, and entity references into a clean JSON output suitable for headless builds, migrations, archiving, or integrations.
+It connects directly to the Drupal database and resolves related content such as taxonomy terms, media, files, paragraphs, entity references, featured images, and videos. The resulting JSON is suitable for headless front ends, migrations, archiving, static site generation, or third‑party integrations.
 
----
-
-## Features
-
-- ✅ Year-based Article filtering (interactive CLI prompt)
-- ✅ Exports **published Articles only**
-- ✅ Full node content:
-  - Title, published date
-  - Body HTML
-  - Inline body images extraction
-  - Byline, summary, featured flag
-  - Raw meta tags data
-- ✅ Featured Image support via **Paragraph → Media → File**
-  - Filters out PDFs and non-image files
-  - Emits warnings when non-image files are encountered
-- ✅ Media & file resolution
-  - Media-first, file fallback
-  - Supports multiple image field machine names
-  - Converts `public://` and `private://` URIs into URLs
-- ✅ Taxonomy export
-  - News Categories
-  - News Tags
-  - Includes term metadata and path aliases
-- ✅ Entity references
-  - Department
-  - Scheduled updates
-- ✅ Video (Media) export
-- ✅ Generic Paragraphs export
-  - Discovers paragraph field tables automatically
-  - Preserves paragraph IDs, revisions, bundle types, and language
-  - Resolves media/file references inside paragraph fields
-- ✅ Pretty-printed, human-readable JSON output
+This script does not require installing or enabling a Drupal module.
 
 ---
 
 ## Requirements
 
-- PHP **8.0+**
-- MySQL / MariaDB
-- Drupal **8.x or 9.x**
-- Database credentials with read access
+- PHP 8.0 or higher
+- MySQL or MariaDB
+- Drupal 8.x or 9.x
+- Database credentials with read-only access
 
-> ⚠️ This script reads directly from the database and does **not** bootstrap Drupal.
+The script reads directly from the Drupal database and does not bootstrap Drupal.
 
 ---
 
 ## Installation
 
-1. Clone this repository or copy the script into a working directory:
+Clone the repository or copy the script into a directory accessible to PHP:
 
-   ```bash
-   git clone https://github.com/your-org/drupal-article-export-to-json.git
-   cd drupal-article-export-to-json
-   ``
+```
+git clone https://github.com/your-org/drupal-article-export-to-json.git
+cd drupal-article-export-to-json
+```
+
+Open `drupal-article-export-to-json.php` and configure the database connection:
+
+```php
+$host = '127.0.0.1';
+$port = '3306';
+$db   = 'drupal_db';
+$user = 'drupal_user';
+$pass = 'drupal_password';
+```
+
+---
+
+## Steps (How to Run)
+
+1. Confirm the database credentials are correct.
+2. Open a terminal in the directory containing the script.
+3. Run the exporter:
+
+```
+php drupal-article-export-to-json.php
+```
+
+4. Enter the start year and end year when prompted.
+5. Wait for processing to complete.
+6. Locate the generated `news_articles.json` file in the same directory.
+
+---
+
+## Output
+
+The script produces a single JSON file named:
+
+```
+news_articles.json
+```
+
+This file contains an array of fully resolved Article objects.
+
+---
+
+## Example Output
+
+```json
+{
+  "nid": 123,
+  "title": "Sample Article",
+  "published_date": "2023-05-14",
+  "byline": "Jane Doe",
+  "summary": "Short teaser text",
+  "featured_article": true,
+  "body_html": "<p>Article content...</p>",
+  "inline_images": [
+    "/sites/default/files/inline-image.jpg"
+  ],
+  "featured_image": {
+    "file": {
+      "filename": "hero.jpg",
+      "url": "/sites/default/files/hero.jpg",
+      "mime": "image/jpeg"
+    }
+  },
+  "news_category": [],
+  "news_tags": [],
+  "department": [],
+  "video": null,
+  "paragraphs": []
+}
+```
+
+---
+
+## Notes
+
+- Reads directly from the Drupal database.
+- Drupal permissions and workflows are not enforced.
+- Only published Articles with a published date are exported.
+- Assumes content type `article` and featured images via Image Paragraphs.
+- Field machine names may require adjustment.
+- Use read-only DB credentials where possible.
+
+---
+
+## License
+
+MIT License
+
+---
+
+## Contributing
+
+Bug reports and pull requests are welcome.
