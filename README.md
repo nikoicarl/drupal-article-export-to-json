@@ -24,7 +24,7 @@ The script reads directly from the Drupal database and does not bootstrap Drupal
 Clone the repository or copy the script into a directory accessible to PHP:
 
 ```
-git clone https://github.com/your-org/drupal-article-export-to-json.git
+git clone https://github.com/nikoicarl/drupal-article-export-to-json.git
 cd drupal-article-export-to-json
 ```
 
