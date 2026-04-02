@@ -55,10 +55,9 @@ $termFields = [
 
 /**
  * Media image field candidates.
- * Your Media type "Image" has an image field machine name: `image` (confirmed earlier).
  */
 $mediaImageFieldCandidates = [
-    'image',              // ✅ your site
+    'image',              // 
     'thumbnail',          // fallback
     'field_media_image',  // fallback
     'field_image',        // fallback (other installs)
@@ -67,7 +66,6 @@ $GLOBALS['mediaImageFieldCandidates'] = $mediaImageFieldCandidates;
 
 /**
  * Paragraph type "Image" has the machine-name field that stores the reference:
- * ✅ field_image (Entity reference)  <-- from your screenshot
  */
 $featuredImageParagraphType = 'image';
 $featuredImageParagraphFieldMachineName = 'field_image'; // paragraph field that points to media/file
